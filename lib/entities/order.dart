@@ -1,12 +1,11 @@
 import 'package:darilko/entities/gift.dart';
 import 'package:isar/isar.dart';
-import 'package:darilko/entities/order.dart';
 
 part 'order.g.dart';
 
 @Collection()
 class Order {
-  Id id = isarAutoIncrementId;
+  Id id = Isar.autoIncrement;
   late DateTime datum;
   late double total;
   late bool paidFor;

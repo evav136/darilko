@@ -7,114 +7,87 @@ part of 'catalogue.dart';
 // **************************************************************************
 
 // coverage:ignore-file
-// ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings
+// ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
 extension GetCatalogueCollection on Isar {
-  IsarCollection<Catalogue> get catalogues => collection();
+  IsarCollection<Catalogue> get catalogues => this.collection();
 }
 
 const CatalogueSchema = CollectionSchema(
   name: r'Catalogue',
-  schema:
-      r'{"name":"Catalogue","idName":"id","properties":[],"indexes":[],"links":[]}',
+  id: 7968722692539278569,
+  properties: {},
+  estimateSize: _catalogueEstimateSize,
+  serialize: _catalogueSerialize,
+  deserialize: _catalogueDeserialize,
+  deserializeProp: _catalogueDeserializeProp,
   idName: r'id',
-  propertyIds: {},
-  listProperties: {},
-  indexIds: {},
-  indexValueTypes: {},
-  linkIds: {r'gifts': 0},
-  backlinkLinkNames: {r'gifts': r'catalogue'},
+  indexes: {},
+  links: {
+    r'gifts': LinkSchema(
+      id: -5932558816554357477,
+      name: r'gifts',
+      target: r'Gift',
+      single: false,
+      linkName: r'catalogue',
+    )
+  },
+  embeddedSchemas: {},
   getId: _catalogueGetId,
-  setId: _catalogueSetId,
   getLinks: _catalogueGetLinks,
-  attachLinks: _catalogueAttachLinks,
-  serializeNative: _catalogueSerializeNative,
-  deserializeNative: _catalogueDeserializeNative,
-  deserializePropNative: _catalogueDeserializePropNative,
-  serializeWeb: _catalogueSerializeWeb,
-  deserializeWeb: _catalogueDeserializeWeb,
-  deserializePropWeb: _catalogueDeserializePropWeb,
-  version: 4,
+  attach: _catalogueAttach,
+  version: '3.1.0+1',
 );
 
-int? _catalogueGetId(Catalogue object) {
-  if (object.id == Isar.autoIncrement) {
-    return null;
-  } else {
-    return object.id;
+int _catalogueEstimateSize(
+  Catalogue object,
+  List<int> offsets,
+  Map<Type, List<int>> allOffsets,
+) {
+  var bytesCount = offsets.last;
+  return bytesCount;
+}
+
+void _catalogueSerialize(
+  Catalogue object,
+  IsarWriter writer,
+  List<int> offsets,
+  Map<Type, List<int>> allOffsets,
+) {}
+Catalogue _catalogueDeserialize(
+  Id id,
+  IsarReader reader,
+  List<int> offsets,
+  Map<Type, List<int>> allOffsets,
+) {
+  final object = Catalogue();
+  object.id = id;
+  return object;
+}
+
+P _catalogueDeserializeProp<P>(
+  IsarReader reader,
+  int propertyId,
+  int offset,
+  Map<Type, List<int>> allOffsets,
+) {
+  switch (propertyId) {
+    default:
+      throw IsarError('Unknown property with id $propertyId');
   }
 }
 
-void _catalogueSetId(Catalogue object, int id) {
-  object.id = id;
+Id _catalogueGetId(Catalogue object) {
+  return object.id;
 }
 
 List<IsarLinkBase<dynamic>> _catalogueGetLinks(Catalogue object) {
   return [object.gifts];
 }
 
-void _catalogueSerializeNative(
-    IsarCollection<Catalogue> collection,
-    IsarCObject cObj,
-    Catalogue object,
-    int staticSize,
-    List<int> offsets,
-    AdapterAlloc alloc) {
-  final size = (staticSize) as int;
-  cObj.buffer = alloc(size);
-  cObj.buffer_length = size;
-
-  final buffer = IsarNative.bufAsBytes(cObj.buffer, size);
-  final writer = IsarBinaryWriter(buffer, staticSize);
-  writer.writeHeader();
-}
-
-Catalogue _catalogueDeserializeNative(IsarCollection<Catalogue> collection,
-    int id, IsarBinaryReader reader, List<int> offsets) {
-  final object = Catalogue();
+void _catalogueAttach(IsarCollection<dynamic> col, Id id, Catalogue object) {
   object.id = id;
-  _catalogueAttachLinks(collection, id, object);
-  return object;
-}
-
-P _catalogueDeserializePropNative<P>(
-    int id, IsarBinaryReader reader, int propertyIndex, int offset) {
-  switch (propertyIndex) {
-    case -1:
-      return id as P;
-    default:
-      throw IsarError('Illegal propertyIndex');
-  }
-}
-
-Object _catalogueSerializeWeb(
-    IsarCollection<Catalogue> collection, Catalogue object) {
-  final jsObj = IsarNative.newJsObject();
-  IsarNative.jsObjectSet(jsObj, r'id', object.id);
-  return jsObj;
-}
-
-Catalogue _catalogueDeserializeWeb(
-    IsarCollection<Catalogue> collection, Object jsObj) {
-  final object = Catalogue();
-  object.id = IsarNative.jsObjectGet(jsObj, r'id');
-  _catalogueAttachLinks(
-      collection, IsarNative.jsObjectGet(jsObj, r'id'), object);
-  return object;
-}
-
-P _catalogueDeserializePropWeb<P>(Object jsObj, String propertyName) {
-  switch (propertyName) {
-    case r'id':
-      return (IsarNative.jsObjectGet(jsObj, r'id')) as P;
-    default:
-      throw IsarError('Illegal propertyName');
-  }
-}
-
-void _catalogueAttachLinks(
-    IsarCollection<dynamic> col, int id, Catalogue object) {
-  object.gifts.attach(col, col.isar.gifts, r'gifts', id);
+  object.gifts.attach(col, col.isar.collection<Gift>(), r'gifts', id);
 }
 
 extension CatalogueQueryWhereSort
@@ -128,7 +101,7 @@ extension CatalogueQueryWhereSort
 
 extension CatalogueQueryWhere
     on QueryBuilder<Catalogue, Catalogue, QWhereClause> {
-  QueryBuilder<Catalogue, Catalogue, QAfterWhereClause> idEqualTo(int id) {
+  QueryBuilder<Catalogue, Catalogue, QAfterWhereClause> idEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
         lower: id,
@@ -137,7 +110,7 @@ extension CatalogueQueryWhere
     });
   }
 
-  QueryBuilder<Catalogue, Catalogue, QAfterWhereClause> idNotEqualTo(int id) {
+  QueryBuilder<Catalogue, Catalogue, QAfterWhereClause> idNotEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -159,7 +132,7 @@ extension CatalogueQueryWhere
     });
   }
 
-  QueryBuilder<Catalogue, Catalogue, QAfterWhereClause> idGreaterThan(int id,
+  QueryBuilder<Catalogue, Catalogue, QAfterWhereClause> idGreaterThan(Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -168,7 +141,7 @@ extension CatalogueQueryWhere
     });
   }
 
-  QueryBuilder<Catalogue, Catalogue, QAfterWhereClause> idLessThan(int id,
+  QueryBuilder<Catalogue, Catalogue, QAfterWhereClause> idLessThan(Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -178,8 +151,8 @@ extension CatalogueQueryWhere
   }
 
   QueryBuilder<Catalogue, Catalogue, QAfterWhereClause> idBetween(
-    int lowerId,
-    int upperId, {
+    Id lowerId,
+    Id upperId, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
@@ -197,7 +170,7 @@ extension CatalogueQueryWhere
 extension CatalogueQueryFilter
     on QueryBuilder<Catalogue, Catalogue, QFilterCondition> {
   QueryBuilder<Catalogue, Catalogue, QAfterFilterCondition> idEqualTo(
-      int value) {
+      Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'id',
@@ -207,7 +180,7 @@ extension CatalogueQueryFilter
   }
 
   QueryBuilder<Catalogue, Catalogue, QAfterFilterCondition> idGreaterThan(
-    int value, {
+    Id value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -220,7 +193,7 @@ extension CatalogueQueryFilter
   }
 
   QueryBuilder<Catalogue, Catalogue, QAfterFilterCondition> idLessThan(
-    int value, {
+    Id value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -233,8 +206,8 @@ extension CatalogueQueryFilter
   }
 
   QueryBuilder<Catalogue, Catalogue, QAfterFilterCondition> idBetween(
-    int lower,
-    int upper, {
+    Id lower,
+    Id upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
@@ -250,24 +223,72 @@ extension CatalogueQueryFilter
   }
 }
 
+extension CatalogueQueryObject
+    on QueryBuilder<Catalogue, Catalogue, QFilterCondition> {}
+
 extension CatalogueQueryLinks
     on QueryBuilder<Catalogue, Catalogue, QFilterCondition> {
   QueryBuilder<Catalogue, Catalogue, QAfterFilterCondition> gifts(
       FilterQuery<Gift> q) {
     return QueryBuilder.apply(this, (query) {
-      return query.link(
-        query.collection.isar.gifts,
-        q,
-        r'gifts',
-      );
+      return query.link(q, r'gifts');
+    });
+  }
+
+  QueryBuilder<Catalogue, Catalogue, QAfterFilterCondition> giftsLengthEqualTo(
+      int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'gifts', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<Catalogue, Catalogue, QAfterFilterCondition> giftsIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'gifts', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Catalogue, Catalogue, QAfterFilterCondition> giftsIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'gifts', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<Catalogue, Catalogue, QAfterFilterCondition> giftsLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'gifts', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<Catalogue, Catalogue, QAfterFilterCondition>
+      giftsLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'gifts', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<Catalogue, Catalogue, QAfterFilterCondition> giftsLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+          r'gifts', lower, includeLower, upper, includeUpper);
     });
   }
 }
 
-extension CatalogueQueryWhereSortBy
-    on QueryBuilder<Catalogue, Catalogue, QSortBy> {}
+extension CatalogueQuerySortBy on QueryBuilder<Catalogue, Catalogue, QSortBy> {}
 
-extension CatalogueQueryWhereSortThenBy
+extension CatalogueQuerySortThenBy
     on QueryBuilder<Catalogue, Catalogue, QSortThenBy> {
   QueryBuilder<Catalogue, Catalogue, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {

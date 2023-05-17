@@ -7,7 +7,7 @@ part 'gift.g.dart';
 // TODO: create a gift collection
 @Collection()
 class Gift {
-  Id id = isarAutoIncrementId;
+  Id id = Isar.autoIncrement;
   late int stock;
   late String name;
   late String description;

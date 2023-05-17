@@ -5,7 +5,7 @@ part 'catalogue.g.dart';
 
 @Collection()
 class Catalogue {
-  Id id = isarAutoIncrementId;
+  Id id = Isar.autoIncrement;
 
   // final ctlg = IsarLinks<Gift>();
   // final filtered = IsarLinks<Gift>();

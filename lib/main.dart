@@ -39,7 +39,7 @@ class HomeScreen extends StatelessWidget {
             child: Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(right: 20.0, top: 22.0),
+                  padding: const EdgeInsets.only(right: 20.0, top: 12.0),
                   child: Text(
                     'Darilko',
                     style: TextStyle(
@@ -50,7 +50,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 23.0),
+                  padding: const EdgeInsets.only(top: 15.0),
                   child: ElevatedButton(
                     onPressed: () {},
                     child: Text('Domov'),
@@ -58,7 +58,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 const SizedBox(width: 16),
                 Padding(
-                  padding: const EdgeInsets.only(top: 23.0),
+                  padding: const EdgeInsets.only(top: 15.0),
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.push(
@@ -78,21 +78,7 @@ class HomeScreen extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '0',
-              style: Theme.of(context).textTheme.headline6,
-            ),
-          ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }

@@ -2,6 +2,8 @@ import 'package:isar/isar.dart';
 import 'package:darilko/entities/catalogue.dart';
 import 'package:darilko/entities/gift.dart';
 import 'package:darilko/entities/order.dart';
+import 'package:path_provider/path_provider.dart';
+
 
 class IsarService {
   late Future<Isar> db;
@@ -58,8 +60,14 @@ class IsarService {
   }
 
   Future<Isar> openDB() async {
+    // nedokoncano
+    final dir = getApplicationDocumentsDirectory();
+
     if (Isar.instanceNames.isEmpty) {
-      return await Isar.open([CatalogueSchema]);
+      return await Isar.open(
+        [CatalogueSchema],
+        directory: ,
+        inspector: true);
     }
 
     return await Future.value(Isar.getInstance());
