@@ -61,12 +61,14 @@ class IsarService {
 
   Future<Isar> openDB() async {
     // nedokoncano
-    final dir = getApplicationDocumentsDirectory();
-
+    final dir = await getApplicationDocumentsDirectory();
+    final path = '${dir.path}/isar-db';
+    //final direc = Directory(path);
+    print(path);
     if (Isar.instanceNames.isEmpty) {
       return await Isar.open(
         [CatalogueSchema],
-        directory: ,
+        directory: path,
         inspector: true);
     }
 
