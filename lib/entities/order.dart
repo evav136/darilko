@@ -12,6 +12,6 @@ class Order {
   late String address;
 
   // eno narocilo ima lahko vec daril (one to many relationship)
-  @Backlink(to: 'order')
-  final gifts = IsarLinks<Gift>();
+  //@Backlink(to: 'order')
+  //final gifts = IsarLinks<Gift>();
 }

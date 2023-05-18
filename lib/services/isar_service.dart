@@ -3,6 +3,7 @@ import 'package:darilko/entities/catalogue.dart';
 import 'package:darilko/entities/gift.dart';
 import 'package:darilko/entities/order.dart';
 import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 
 class IsarService {
@@ -11,7 +12,7 @@ class IsarService {
   IsarService() {
     db = openDB();
   }
-
+  
   Future<void> saveCatalogue(Catalogue newCatalogue) async {
     final isar = await db;
     isar.writeTxnSync(() => isar.catalogues.putSync(newCatalogue));
@@ -58,20 +59,44 @@ class IsarService {
   Future<void> cleanDb() async {
     throw UnimplementedError();
   }
-
   Future<Isar> openDB() async {
+    final directory = await getApplicationDocumentsDirectory();
+    final path = '${directory.path}/isar-db';
+
+    final dir = Directory(path);
+    if (!dir.existsSync()) {
+      dir.createSync(recursive: true);
+    }
+
+    print(path);
+    
+    if (Isar.instanceNames.isEmpty) {
+      return await Isar.open([
+        CatalogueSchema, OrderSchema, GiftSchema
+      ], inspector: true, directory: path);
+    }
+
+    return Future.value(Isar.getInstance());
+  }
+
+  /* Future<Isar> openDB() async {
     // nedokoncano
     final dir = await getApplicationDocumentsDirectory();
-    final path = '${dir.path}/isar-db';
+    if(Isar.instanceNames.isEmpty) {
+      return await Isar.open([CatalogueSchema],
+      inspector: true, directory: dir.path);
+    
+    }
+    //final path = '${dir.path}/isar-db';
     //final direc = Directory(path);
-    print(path);
-    if (Isar.instanceNames.isEmpty) {
+    //print(path);
+    /* if (Isar.instanceNames.isEmpty) {
       return await Isar.open(
         [CatalogueSchema],
         directory: path,
         inspector: true);
     }
-
+ */
     return await Future.value(Isar.getInstance());
-  }
+  } */
 }

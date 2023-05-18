@@ -13,8 +13,23 @@ class Gift {
   late String description;
   late double price;
   late String picturePath;
-  late List<String> categories;
+  //late List<String> categories;
 
-  final catalogue = IsarLinks<Catalogue>();
-  final order = IsarLinks<Order>();
+  //final catalogue = IsarLinks<Catalogue>();
+  //final order = IsarLinks<Order>();
+
+   Gift({
+    required this.stock,
+    required this.name,
+    required this.description,
+    required this.price,
+    required this.picturePath,
+   // required this.categories,
+  });
+  /* static Future<void> saveGift(Gift newGift) async {
+    final isar = await Isar.getInstance();
+    await isar.writeTxn((isar) {
+      isar.gifts.put(newGift);
+    });
+  } */
 }

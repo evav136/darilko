@@ -10,6 +10,6 @@ class Catalogue {
   // final ctlg = IsarLinks<Gift>();
   // final filtered = IsarLinks<Gift>();
 
-  @Backlink(to: 'catalogue')
-  final gifts = IsarLinks<Gift>();
+ // @Backlink(to: 'catalogue')
+  //final gifts = IsarLinks<Gift>();
 }

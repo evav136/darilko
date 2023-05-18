@@ -23,15 +23,7 @@ const CatalogueSchema = CollectionSchema(
   deserializeProp: _catalogueDeserializeProp,
   idName: r'id',
   indexes: {},
-  links: {
-    r'gifts': LinkSchema(
-      id: -5932558816554357477,
-      name: r'gifts',
-      target: r'Gift',
-      single: false,
-      linkName: r'catalogue',
-    )
-  },
+  links: {},
   embeddedSchemas: {},
   getId: _catalogueGetId,
   getLinks: _catalogueGetLinks,
@@ -82,12 +74,11 @@ Id _catalogueGetId(Catalogue object) {
 }
 
 List<IsarLinkBase<dynamic>> _catalogueGetLinks(Catalogue object) {
-  return [object.gifts];
+  return [];
 }
 
 void _catalogueAttach(IsarCollection<dynamic> col, Id id, Catalogue object) {
   object.id = id;
-  object.gifts.attach(col, col.isar.collection<Gift>(), r'gifts', id);
 }
 
 extension CatalogueQueryWhereSort
@@ -227,64 +218,7 @@ extension CatalogueQueryObject
     on QueryBuilder<Catalogue, Catalogue, QFilterCondition> {}
 
 extension CatalogueQueryLinks
-    on QueryBuilder<Catalogue, Catalogue, QFilterCondition> {
-  QueryBuilder<Catalogue, Catalogue, QAfterFilterCondition> gifts(
-      FilterQuery<Gift> q) {
-    return QueryBuilder.apply(this, (query) {
-      return query.link(q, r'gifts');
-    });
-  }
-
-  QueryBuilder<Catalogue, Catalogue, QAfterFilterCondition> giftsLengthEqualTo(
-      int length) {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'gifts', length, true, length, true);
-    });
-  }
-
-  QueryBuilder<Catalogue, Catalogue, QAfterFilterCondition> giftsIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'gifts', 0, true, 0, true);
-    });
-  }
-
-  QueryBuilder<Catalogue, Catalogue, QAfterFilterCondition> giftsIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'gifts', 0, false, 999999, true);
-    });
-  }
-
-  QueryBuilder<Catalogue, Catalogue, QAfterFilterCondition> giftsLengthLessThan(
-    int length, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'gifts', 0, true, length, include);
-    });
-  }
-
-  QueryBuilder<Catalogue, Catalogue, QAfterFilterCondition>
-      giftsLengthGreaterThan(
-    int length, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'gifts', length, include, 999999, true);
-    });
-  }
-
-  QueryBuilder<Catalogue, Catalogue, QAfterFilterCondition> giftsLengthBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(
-          r'gifts', lower, includeLower, upper, includeUpper);
-    });
-  }
-}
+    on QueryBuilder<Catalogue, Catalogue, QFilterCondition> {}
 
 extension CatalogueQuerySortBy on QueryBuilder<Catalogue, Catalogue, QSortBy> {}
 
