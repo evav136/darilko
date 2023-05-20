@@ -14,6 +14,7 @@ class IsarService {
   IsarService() {
     db = openDB();
     //cleanDb();
+    //deleteAllGifts();
     initializeGifts();
 
   }
@@ -21,16 +22,23 @@ class IsarService {
     isar = await db;
     final gifts = getAllGifts();
   }
-  Future<void> cleanDb() async {
-        throw UnimplementedError();
+  /* Future<void> cleanDb() async {
+        //throw UnimplementedError();
 
-      /* final isar = await db;
-      await isar.writeTxnSync((isar) {
-        //isar.catalogues.deleteAll();
-        isar.gifts.deleteAll();
-        //isar.orders.deleteAll();
-      }; */
-    }
+    final isar = await db;
+    await isar.writeTxnSync(() {
+      //isar.catalogues.deleteAll();
+      isar.gifts.deleteAll();
+      //isar.orders.deleteAll();
+    }); 
+  } */
+   /* Future<void> deleteAllGifts() async {
+  final isar = await db;
+  await isar.writeTxnSync((isar) {
+    isar.gifts.deleteAll();
+  } 
+}  */
+
 
   Future<void> saveCatalogue(Catalogue newCatalogue) async {
     final isar = await db;
@@ -58,7 +66,10 @@ class IsarService {
   return giftQuery.findAll();
 }
 
-
+  Future<void> cleanDb() async {
+    final isar = await db;
+    await isar.writeTxn(() => isar.clear());
+  }
 
   Future<List<Order>> getAllOrders() async {
     throw UnimplementedError();

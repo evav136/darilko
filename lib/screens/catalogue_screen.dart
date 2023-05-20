@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:darilko/entities/gift.dart';
 import 'package:darilko/services/isar_service.dart';
-
+import 'package:darilko/screens/gift_screen.dart';
 
 class CatalogueScreen extends StatefulWidget {
   late final String filter;
@@ -122,7 +122,7 @@ class _CatalogueScreenState extends State<CatalogueScreen> {
     ),
     SizedBox(height: 16),
     Text(
-      'Filter: ${widget.filter}',
+      'Priložnost: ${widget.filter}',
       style: Theme.of(context).textTheme.headline6,
     ),
     SizedBox(height: 16),
@@ -131,11 +131,21 @@ class _CatalogueScreenState extends State<CatalogueScreen> {
         itemCount: gifts.length,
         itemBuilder: (context, index) {
           final gift = gifts[index];
-          return ListTile(
-            leading: Image.asset(gift.picturePath), // Display the gift image
-            title: Text(gift.name), // Display the gift name
-            subtitle: Text(gift.description), // Display the gift description
-            trailing: Text('\$${gift.price.toStringAsFixed(2)}'), // Display the gift price
+          return GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => GiftScreen(gift: gift),
+            ),
+          );
+        },
+          child: ListTile(
+          leading: Image.asset(gift.picturePath), // Display the gift image
+          title: Text(gift.name), // Display the gift name
+          subtitle: Text(gift.description), // Display the gift description
+          trailing: Text('\$${gift.price.toStringAsFixed(2)}'), // Display the gift price
+        ),
           );
         },
       ),

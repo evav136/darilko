@@ -143,7 +143,7 @@ Widget build(BuildContext context) {
             child: Text(
               'Podari darilo svojemu najbližnjemu. ',
               style: TextStyle(
-                fontSize: 15,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -153,7 +153,7 @@ Widget build(BuildContext context) {
             child: Text(
               'Izberi priložnost: ',
               style: TextStyle(
-                fontSize: 15,
+                fontSize: 17,
               ),
             ),
           ),
@@ -173,7 +173,7 @@ Widget build(BuildContext context) {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => CatalogueScreen(filter: "va")),
+                              MaterialPageRoute(builder: (context) => CatalogueScreen(filter: "VALENTINOVO")),
                             );
                             // Handle tap on Valentine's Day image
                           },
@@ -208,7 +208,7 @@ Widget build(BuildContext context) {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => CatalogueScreen(filter: "rd")),
+                              MaterialPageRoute(builder: (context) => CatalogueScreen(filter: "ROJSTNI DAN")),
                             );
                             // Handle tap on Birthday image
                           },
@@ -251,7 +251,7 @@ Widget build(BuildContext context) {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => CatalogueScreen(filter: "ob")),
+                              MaterialPageRoute(builder: (context) => CatalogueScreen(filter: "OBLETNICA")),
                             );
                             // Handle tap on Anniversary image
                           },
@@ -286,7 +286,7 @@ Widget build(BuildContext context) {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => CatalogueScreen(filter: "bo")),
+                              MaterialPageRoute(builder: (context) => CatalogueScreen(filter: "BOŽIČ")),
                             );
                             // Handle tap on Christmas image
                           },

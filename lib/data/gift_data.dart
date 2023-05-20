@@ -22,7 +22,7 @@ class GiftData {
       price: 15.0,
       picturePath: "assets/rd.jpg",
       stock: 3,
-      filter: "rd"
+      filter: "ROJSTNI DAN"
     );
     Gift gift3 = Gift(
       name: "Gift 3",
@@ -30,7 +30,7 @@ class GiftData {
       price: 15.0,
       picturePath: "assets/valentinovo.jpg",
       stock: 3,
-      filter: "va"
+      filter: "VALENTINOVO"
     );
     Gift gift4 = Gift(
       name: "Gift 4",
@@ -38,7 +38,7 @@ class GiftData {
       price: 15.0,
       picturePath: "assets/obletnica.jpg",
       stock: 3,
-      filter: "ob"
+      filter: "OBLETNICA"
     );
     Gift gift5 = Gift(
       name: "Gift 5",
@@ -48,11 +48,23 @@ class GiftData {
       stock: 3,
       filter: "BOŽIČ"
     );
+    Gift gift6 = Gift(
+      name: "Gift 6",
+      description: "This is gift 5",
+      price: 15.0,
+      picturePath: "assets/rdz2.jpg",
+      stock: 0,
+      filter: "ROJSTNI DAN"
+    );
 
     await isarService.saveGift(gift1);
     await isarService.saveGift(gift2);
     await isarService.saveGift(gift3);
     await isarService.saveGift(gift4);
+    await isarService.saveGift(gift5);
+    await isarService.saveGift(gift6);
+
+
 
 
   }
