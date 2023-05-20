@@ -44,7 +44,14 @@ const OrderSchema = CollectionSchema(
   deserializeProp: _orderDeserializeProp,
   idName: r'id',
   indexes: {},
-  links: {},
+  links: {
+    r'gifts': LinkSchema(
+      id: -8388155407657700344,
+      name: r'gifts',
+      target: r'Gift',
+      single: false,
+    )
+  },
   embeddedSchemas: {},
   getId: _orderGetId,
   getLinks: _orderGetLinks,
@@ -114,11 +121,12 @@ Id _orderGetId(Order object) {
 }
 
 List<IsarLinkBase<dynamic>> _orderGetLinks(Order object) {
-  return [];
+  return [object.gifts];
 }
 
 void _orderAttach(IsarCollection<dynamic> col, Id id, Order object) {
   object.id = id;
+  object.gifts.attach(col, col.isar.collection<Gift>(), r'gifts', id);
 }
 
 extension OrderQueryWhereSort on QueryBuilder<Order, Order, QWhere> {
@@ -506,7 +514,62 @@ extension OrderQueryFilter on QueryBuilder<Order, Order, QFilterCondition> {
 
 extension OrderQueryObject on QueryBuilder<Order, Order, QFilterCondition> {}
 
-extension OrderQueryLinks on QueryBuilder<Order, Order, QFilterCondition> {}
+extension OrderQueryLinks on QueryBuilder<Order, Order, QFilterCondition> {
+  QueryBuilder<Order, Order, QAfterFilterCondition> gifts(FilterQuery<Gift> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'gifts');
+    });
+  }
+
+  QueryBuilder<Order, Order, QAfterFilterCondition> giftsLengthEqualTo(
+      int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'gifts', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<Order, Order, QAfterFilterCondition> giftsIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'gifts', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Order, Order, QAfterFilterCondition> giftsIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'gifts', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<Order, Order, QAfterFilterCondition> giftsLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'gifts', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<Order, Order, QAfterFilterCondition> giftsLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'gifts', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<Order, Order, QAfterFilterCondition> giftsLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+          r'gifts', lower, includeLower, upper, includeUpper);
+    });
+  }
+}
 
 extension OrderQuerySortBy on QueryBuilder<Order, Order, QSortBy> {
   QueryBuilder<Order, Order, QAfterSortBy> sortByAddress() {
