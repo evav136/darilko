@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:darilko/entities/gift.dart';
 import 'package:darilko/entities/order.dart';
 import 'package:flutter/services.dart';
+import 'package:darilko/screens/order_screen.dart';
 
 class GiftScreen extends StatefulWidget {
   final Gift gift;
@@ -31,7 +32,8 @@ class _GiftScreenState extends State<GiftScreen> {
   }
 
   void checkStock() {
-    if (widget.gift.stock > 0) { // Check if there is at least one gift in stock
+    if (widget.gift.stock > 0) {
+      // Check if there is at least one gift in stock
       setState(() {
         _isInStock = true; // Set _isInStock to true if gift is in stock
       });
@@ -89,7 +91,11 @@ class _GiftScreenState extends State<GiftScreen> {
                           actions: [
                             TextButton(
                               onPressed: () {
-                                Navigator.of(context).pop();
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            OrderScreen(order: _order)));
                               },
                               child: Text('Preglej naročilo'),
                             ),
@@ -117,7 +123,7 @@ class _GiftScreenState extends State<GiftScreen> {
                       });
                     },
                     //inputFormatters: [
-                      //FilteringTextInputFormatter.deny(RegExp('')), // Allow only input with '@' symbol
+                    //FilteringTextInputFormatter.deny(RegExp('')), // Allow only input with '@' symbol
                     //],
                     decoration: InputDecoration(
                       labelText: 'E-pošta',
