@@ -11,6 +11,15 @@ class Order {
   late bool paidFor;
   late String address;
 
+  final gifts = IsarLinks<Gift>();
+
+  void addGift(Gift gift) {
+    gifts.add(gift);
+  }
+
+  void removeGift(Gift gift) {
+    gifts.remove(gift);
+  }
   // eno narocilo ima lahko vec daril (one to many relationship)
   //@Backlink(to: 'order')
   //final gifts = IsarLinks<Gift>();

@@ -13,6 +13,7 @@ class Gift {
   late String description;
   late double price;
   late String picturePath;
+  late String filter;
   //late List<String> categories;
 
   //final catalogue = IsarLinks<Catalogue>();
@@ -24,6 +25,8 @@ class Gift {
     required this.description,
     required this.price,
     required this.picturePath,
+    required this.filter,
+
    // required this.categories,
   });
   /* static Future<void> saveGift(Gift newGift) async {

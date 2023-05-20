@@ -22,23 +22,28 @@ const GiftSchema = CollectionSchema(
       name: r'description',
       type: IsarType.string,
     ),
-    r'name': PropertySchema(
+    r'filter': PropertySchema(
       id: 1,
+      name: r'filter',
+      type: IsarType.string,
+    ),
+    r'name': PropertySchema(
+      id: 2,
       name: r'name',
       type: IsarType.string,
     ),
     r'picturePath': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'picturePath',
       type: IsarType.string,
     ),
     r'price': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'price',
       type: IsarType.double,
     ),
     r'stock': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'stock',
       type: IsarType.long,
     )
@@ -64,6 +69,7 @@ int _giftEstimateSize(
 ) {
   var bytesCount = offsets.last;
   bytesCount += 3 + object.description.length * 3;
+  bytesCount += 3 + object.filter.length * 3;
   bytesCount += 3 + object.name.length * 3;
   bytesCount += 3 + object.picturePath.length * 3;
   return bytesCount;
@@ -76,10 +82,11 @@ void _giftSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.description);
-  writer.writeString(offsets[1], object.name);
-  writer.writeString(offsets[2], object.picturePath);
-  writer.writeDouble(offsets[3], object.price);
-  writer.writeLong(offsets[4], object.stock);
+  writer.writeString(offsets[1], object.filter);
+  writer.writeString(offsets[2], object.name);
+  writer.writeString(offsets[3], object.picturePath);
+  writer.writeDouble(offsets[4], object.price);
+  writer.writeLong(offsets[5], object.stock);
 }
 
 Gift _giftDeserialize(
@@ -90,10 +97,11 @@ Gift _giftDeserialize(
 ) {
   final object = Gift(
     description: reader.readString(offsets[0]),
-    name: reader.readString(offsets[1]),
-    picturePath: reader.readString(offsets[2]),
-    price: reader.readDouble(offsets[3]),
-    stock: reader.readLong(offsets[4]),
+    filter: reader.readString(offsets[1]),
+    name: reader.readString(offsets[2]),
+    picturePath: reader.readString(offsets[3]),
+    price: reader.readDouble(offsets[4]),
+    stock: reader.readLong(offsets[5]),
   );
   object.id = id;
   return object;
@@ -113,8 +121,10 @@ P _giftDeserializeProp<P>(
     case 2:
       return (reader.readString(offset)) as P;
     case 3:
-      return (reader.readDouble(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 4:
+      return (reader.readDouble(offset)) as P;
+    case 5:
       return (reader.readLong(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -334,6 +344,134 @@ extension GiftQueryFilter on QueryBuilder<Gift, Gift, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'description',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Gift, Gift, QAfterFilterCondition> filterEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'filter',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Gift, Gift, QAfterFilterCondition> filterGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'filter',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Gift, Gift, QAfterFilterCondition> filterLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'filter',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Gift, Gift, QAfterFilterCondition> filterBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'filter',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Gift, Gift, QAfterFilterCondition> filterStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'filter',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Gift, Gift, QAfterFilterCondition> filterEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'filter',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Gift, Gift, QAfterFilterCondition> filterContains(String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'filter',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Gift, Gift, QAfterFilterCondition> filterMatches(String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'filter',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Gift, Gift, QAfterFilterCondition> filterIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'filter',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Gift, Gift, QAfterFilterCondition> filterIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'filter',
         value: '',
       ));
     });
@@ -781,6 +919,18 @@ extension GiftQuerySortBy on QueryBuilder<Gift, Gift, QSortBy> {
     });
   }
 
+  QueryBuilder<Gift, Gift, QAfterSortBy> sortByFilter() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'filter', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Gift, Gift, QAfterSortBy> sortByFilterDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'filter', Sort.desc);
+    });
+  }
+
   QueryBuilder<Gift, Gift, QAfterSortBy> sortByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -840,6 +990,18 @@ extension GiftQuerySortThenBy on QueryBuilder<Gift, Gift, QSortThenBy> {
   QueryBuilder<Gift, Gift, QAfterSortBy> thenByDescriptionDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'description', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Gift, Gift, QAfterSortBy> thenByFilter() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'filter', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Gift, Gift, QAfterSortBy> thenByFilterDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'filter', Sort.desc);
     });
   }
 
@@ -912,6 +1074,13 @@ extension GiftQueryWhereDistinct on QueryBuilder<Gift, Gift, QDistinct> {
     });
   }
 
+  QueryBuilder<Gift, Gift, QDistinct> distinctByFilter(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'filter', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<Gift, Gift, QDistinct> distinctByName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -949,6 +1118,12 @@ extension GiftQueryProperty on QueryBuilder<Gift, Gift, QQueryProperty> {
   QueryBuilder<Gift, String, QQueryOperations> descriptionProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'description');
+    });
+  }
+
+  QueryBuilder<Gift, String, QQueryOperations> filterProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'filter');
     });
   }
 

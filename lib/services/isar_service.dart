@@ -1,18 +1,37 @@
-import 'package:isar/isar.dart';
 import 'package:darilko/entities/catalogue.dart';
 import 'package:darilko/entities/gift.dart';
 import 'package:darilko/entities/order.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
-
+import 'package:isar/isar.dart';
 
 class IsarService {
   late Future<Isar> db;
+  late Isar isar;
+  //late Collection gifts;
+
 
   IsarService() {
     db = openDB();
+    //cleanDb();
+    initializeGifts();
+
   }
-  
+  Future<void> initializeGifts() async {
+    isar = await db;
+    final gifts = getAllGifts();
+  }
+  Future<void> cleanDb() async {
+        throw UnimplementedError();
+
+      /* final isar = await db;
+      await isar.writeTxnSync((isar) {
+        //isar.catalogues.deleteAll();
+        isar.gifts.deleteAll();
+        //isar.orders.deleteAll();
+      }; */
+    }
+
   Future<void> saveCatalogue(Catalogue newCatalogue) async {
     final isar = await db;
     isar.writeTxnSync(() => isar.catalogues.putSync(newCatalogue));
@@ -33,18 +52,32 @@ class IsarService {
   }
 
   Future<List<Gift>> getAllGifts() async {
-    throw UnimplementedError();
-  }
+  final isar = await db;
+  final giftQuery = isar.gifts.where();
+  print(giftQuery);
+  return giftQuery.findAll();
+}
+
+
 
   Future<List<Order>> getAllOrders() async {
     throw UnimplementedError();
   }
 
-  /*
-  Stream<Gift> chooseGift() async* {
-    throw UnimplementedError();
+  Future<List<Gift>> getGiftsByFilter(String filter) async {
+    final isar = await db;
+    final allGifts = await getAllGifts();
+    print(allGifts);
+  
+    final filteredGifts = allGifts.where((gift) => gift.filter == filter).toList();
+  
+    return filteredGifts;
+    /* final isar = await db;
+    
+    final giftQuery = isar.gifts.where();
+
+    return await giftQuery.findAll(); */
   }
-  */
 
   Future<Gift?> getGiftById(int id) async {
     final isar = await db;
@@ -56,9 +89,8 @@ class IsarService {
     return isar.orders.get(id);
   }
 
-  Future<void> cleanDb() async {
-    throw UnimplementedError();
-  }
+  
+  
   Future<Isar> openDB() async {
     final directory = await getApplicationDocumentsDirectory();
     final path = '${directory.path}/isar-db';
@@ -71,32 +103,13 @@ class IsarService {
     print(path);
     
     if (Isar.instanceNames.isEmpty) {
-      return await Isar.open([
-        CatalogueSchema, OrderSchema, GiftSchema
-      ], inspector: true, directory: path);
+      return await Isar.open(
+        [CatalogueSchema, OrderSchema, GiftSchema],
+        inspector: true,
+        directory: path,
+      );
     }
 
     return Future.value(Isar.getInstance());
   }
-
-  /* Future<Isar> openDB() async {
-    // nedokoncano
-    final dir = await getApplicationDocumentsDirectory();
-    if(Isar.instanceNames.isEmpty) {
-      return await Isar.open([CatalogueSchema],
-      inspector: true, directory: dir.path);
-    
-    }
-    //final path = '${dir.path}/isar-db';
-    //final direc = Directory(path);
-    //print(path);
-    /* if (Isar.instanceNames.isEmpty) {
-      return await Isar.open(
-        [CatalogueSchema],
-        directory: path,
-        inspector: true);
-    }
- */
-    return await Future.value(Isar.getInstance());
-  } */
 }

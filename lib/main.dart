@@ -4,13 +4,42 @@ import 'package:isar/isar.dart';
 import 'package:darilko/services/isar_service.dart';
 import 'package:darilko/entities/gift.dart';
 import 'package:darilko/entities/catalogue.dart';
+import 'package:darilko/data/gift_data.dart';
 
-void main() {
+/* void main() async {
   runApp(const MyApp());
+  IsarService isarService = IsarService(); // Create an instance of IsarService
+  GiftData giftData = GiftData(isarService: isarService); // Create an instance of GiftData
+
+  await giftData.addPreparedGifts(); // Add pre-prepared gifts to the database
+
+} */
+/* void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  IsarService isarService = IsarService(); // Create an instance of IsarService
+  GiftData giftData = GiftData(isarService: isarService); // Create an instance of GiftData
+
+  await giftData.addPreparedGifts(); // Add pre-prepared gifts to the database
+
+  runApp(MyApp(isarService: isarService)); // Pass the IsarService instance to MyApp
+} */
+void main() async {
+  runApp(const MyApp());
+  IsarService isarService = IsarService();
+  GiftData giftData = GiftData(isarService: isarService);
+
+  await giftData.addPreparedGifts(); 
 }
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+  //final IsarService isarService;
+
+  //const MyApp({Key? key, required this.isarService}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +80,9 @@ class _HomeScreenState extends State<HomeScreen> {
   void _saveName() async {
     final String name = _nameController.text.trim();
     if (name.isNotEmpty) {
-      //final Catalogue newCatalogue = Catalogue(name: name); // Create a new Catalogue object with the entered name
-      //await widget.isarService.saveCatalogue(newCatalogue); // Save the Catalogue object to the database
-      Gift newGift = Gift(name: "voda", description: "h20", picturePath: "", price: 22.2, stock: 3);
+      Gift newGift = Gift(name: "voda", description: "h20", picturePath: "", price: 22.2, stock: 3,filter: "bo");
+      //Gift newGift1 = Gift(name: "voda1", description: "h20", picturePath: "", price: 22.2, stock: 3);
+
       await widget.isarService.saveGift(newGift);
       _nameController.clear(); // Clear the text field
     }
@@ -95,7 +124,7 @@ Widget build(BuildContext context) {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => CatalogueScreen()),
+                      MaterialPageRoute(builder: (context) => CatalogueScreen(filter: "")),
                     );
                   },
                   child: Text('Katalog'),
@@ -142,6 +171,10 @@ Widget build(BuildContext context) {
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => CatalogueScreen(filter: "va")),
+                            );
                             // Handle tap on Valentine's Day image
                           },
                           child: Column(
@@ -173,6 +206,10 @@ Widget build(BuildContext context) {
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => CatalogueScreen(filter: "rd")),
+                            );
                             // Handle tap on Birthday image
                           },
                           child: Column(
@@ -212,6 +249,10 @@ Widget build(BuildContext context) {
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => CatalogueScreen(filter: "ob")),
+                            );
                             // Handle tap on Anniversary image
                           },
                           child: Column(
@@ -243,6 +284,10 @@ Widget build(BuildContext context) {
                       Expanded(
                         child: GestureDetector(
                           onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => CatalogueScreen(filter: "bo")),
+                            );
                             // Handle tap on Christmas image
                           },
                           child: Column(
@@ -262,7 +307,7 @@ Widget build(BuildContext context) {
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
                                 child: Image.asset(
-                                  'assets/bozic.jpg', // Replace with your image asset
+                                  'assets/bozic2.jpg', // Replace with your image asset
                                   fit: BoxFit.cover,
                                 ),
                               ),
