@@ -7,7 +7,7 @@ part 'order.g.dart';
 class Order {
   Id id = Isar.autoIncrement;
   late DateTime datum;
-  late double total;
+  late double total = 0;
   late bool paidFor;
   late String address;
 
@@ -15,10 +15,12 @@ class Order {
 
   void addGift(Gift gift) {
     gifts.add(gift);
+    total += gift.price;
   }
 
   void removeGift(Gift gift) {
     gifts.remove(gift);
+    total -= gift.price;
   }
   // eno narocilo ima lahko vec daril (one to many relationship)
   //@Backlink(to: 'order')
