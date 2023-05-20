@@ -26,134 +26,163 @@ class _CatalogueScreenState extends State<CatalogueScreen> {
     gifts = await isarService.getGiftsByFilter(widget.filter);
     setState(() {}); // Update the state to trigger a rebuild of the UI
   }
+
   String filter = "";
   String _selectedItem = 'Rojstni dan'; // Initial selected item
 
-  List<String> _dropdownItems = ['Rojstni dan', 'Obletnica', 'Valentinovo', 'Božič']; // Dropdown menu items
+  List<String> _dropdownItems = [
+    'Rojstni dan',
+    'Obletnica',
+    'Valentinovo',
+    'Božič'
+  ]; // Dropdown menu items
 
- void _updateFilter(String newValue) {
+  void _updateFilter(String newValue) {
     setState(() {
       widget.filter = newValue;
     });
     try {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => CatalogueScreen(filter: newValue),
-      ),
-    );
-  } catch (error, stackTrace) {
-    // Handle the exception here
-    print('Exception occurred: $error');
-    print('Stack trace: $stackTrace');
-  }
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CatalogueScreen(filter: newValue),
+        ),
+      );
+    } catch (error, stackTrace) {
+      // Handle the exception here
+      print('Exception occurred: $error');
+      print('Stack trace: $stackTrace');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(80),
-        child: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Padding(
-            padding: const EdgeInsets.only(top: 23.0),
-            child: Text(
-              'Katalog',
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(80),
+          child: AppBar(
+            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+            title: Padding(
+              padding: const EdgeInsets.only(top: 23.0),
+              child: Text(
+                'Katalog',
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
             ),
-          ),
-          automaticallyImplyLeading: false, // Remove the default back button
-          leading: Padding(
-            padding: const EdgeInsets.only(top: 22.0, left: 10.0),
-            child: IconButton(
-              onPressed: () {
-                Navigator.pop(context); // Go back to the previous screen
-              },
-              icon: Icon(Icons.arrow_back),
-            ),
-          ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(top: 22.0, right: 20.0),
-              child: ElevatedButton(
+            automaticallyImplyLeading: false, // Remove the default back button
+            leading: Padding(
+              padding: const EdgeInsets.only(top: 22.0, left: 10.0),
+              child: IconButton(
                 onPressed: () {
                   Navigator.pop(context); // Go back to the previous screen
                 },
-                child: const Text('Domov'),
+                icon: Icon(Icons.arrow_back),
+              ),
+            ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(top: 22.0, right: 20.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Go back to the previous screen
+                  },
+                  child: const Text('Domov'),
+                ),
+              ),
+            ],
+          ),
+        ),
+        body: Column(
+          children: [
+            Row(
+              children: [
+                Text(
+                  '    Izberi priložnost:   ',
+                  style: TextStyle(fontSize: 20),
+                ),
+                SizedBox(width: 8),
+                DropdownButton<String>(
+                  value: _selectedItem,
+                  dropdownColor: Color.fromARGB(255, 220, 187, 249),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _selectedItem = newValue!;
+                      _updateFilter(newValue!);
+                    });
+                  },
+                  items: _dropdownItems.map<DropdownMenuItem<String>>(
+                    (String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    },
+                  ).toList(),
+                ),
+              ],
+            ),
+            SizedBox(height: 16),
+            Text(
+              'Priložnost: ${widget.filter}',
+              style: Theme.of(context).textTheme.headline6,
+            ),
+            SizedBox(height: 16),
+            Expanded(
+              child: ListView.builder(
+                itemCount: gifts.length,
+                itemBuilder: (context, index) {
+                  final gift = gifts[index];
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => GiftScreen(gift: gift),
+                        ),
+                      );
+                    },
+                    child: ListTile(
+                      leading: SizedBox(
+                        width: 80,
+                        height: 100,
+                        child: Image.asset(
+                            gift.picturePath), // Display the gift image
+                      ),
+                      title: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            gift.name, // Display the gift name
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            gift.description,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontSize: 12), // Adjust the font size as needed
+                          ),
+                        ],
+                      ),
+                      trailing: Text(
+                        '€${gift.price.toStringAsFixed(2)}', // Display the gift price
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
           ],
-        ),
-      ),
-      
-      body: Column(
-  children: [
-    Row(
-      children: [
-        Text(
-          '    Izberi priložnost:   ',
-          style: TextStyle(fontSize: 20),
-        ),
-        SizedBox(width: 8),
-        DropdownButton<String>(
-          value: _selectedItem,
-          dropdownColor: Color.fromARGB(255, 220, 187, 249),
-          onChanged: (String? newValue) {
-            setState(() {
-              _selectedItem = newValue!;
-              _updateFilter(newValue!);
-            });
-          },
-          items: _dropdownItems.map<DropdownMenuItem<String>>(
-            (String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            },
-          ).toList(),
-        ),
-      ],
-    ),
-    SizedBox(height: 16),
-    Text(
-      'Priložnost: ${widget.filter}',
-      style: Theme.of(context).textTheme.headline6,
-    ),
-    SizedBox(height: 16),
-    Expanded(
-      child: ListView.builder(
-        itemCount: gifts.length,
-        itemBuilder: (context, index) {
-          final gift = gifts[index];
-          return GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => GiftScreen(gift: gift),
-            ),
-          );
-        },
-          child: ListTile(
-          leading: Image.asset(gift.picturePath), // Display the gift image
-          title: Text(gift.name), // Display the gift name
-          subtitle: Text(gift.description), // Display the gift description
-          trailing: Text('\$${gift.price.toStringAsFixed(2)}'), // Display the gift price
-        ),
-          );
-        },
-      ),
-    ),
-  ],
-));
+        ));
 
-      /* body: Column(
+    /* body: Column(
         children: [
           Row(
             children: [
@@ -209,6 +238,5 @@ class _CatalogueScreenState extends State<CatalogueScreen> {
     ),
   ]
   )); */
-  
-}
+  }
 }
