@@ -5,10 +5,10 @@ Flutter aplikacija za pomoč pri izbiranju daril. Darila lahko izbiraš glede na
 
 ## ZASLONSKI POSNETKI
 
-![homepage](https://github.com/evav136/darilko/assets/79158550/04fe3d52-5d0d-4949-97b4-a75230a22028)
-![katalog](https://github.com/evav136/darilko/assets/79158550/86aef6ef-d70f-489b-9b48-83b4c853114f)
-![filtriranKatalog](https://github.com/evav136/darilko/assets/79158550/5059215c-6560-4d42-a592-6ce59bf2adcb)
-![podrobnostiDarila](https://github.com/evav136/darilko/assets/79158550/88f7b9d0-4d87-49e2-be82-a562e510a476)
-![plačaj](https://github.com/evav136/darilko/assets/79158550/bd656ee4-dbdc-489c-a824-f2af04bb8057)
-![vnesipodatke](https://github.com/evav136/darilko/assets/79158550/fb3394ea-0231-4b54-834c-3acc7d272b60)
-![uspešnoNarocilo](https://github.com/evav136/darilko/assets/79158550/0f4d97b5-0587-4179-aace-7799b0226a9f)
+![homepage](https://github.com/evav136/darilko/assets/79158550/1dc2b8bc-1bcc-4cfd-9f9c-21862f3b6019)
+![katalog](https://github.com/evav136/darilko/assets/79158550/e4d4af1b-b270-410e-94c3-c2d1ebf850c6)
+![filtriranKatalog](https://github.com/evav136/darilko/assets/79158550/5715632f-b1e2-4647-a8a3-8eceeb87f64a)
+![podrobnostiDarila](https://github.com/evav136/darilko/assets/79158550/49a15407-80e6-4ebd-9732-fbd23ab479f3)
+![plačaj](https://github.com/evav136/darilko/assets/79158550/fd0a5319-1a37-4cf3-badb-16e387b0cdf1)
+![vnesipodatke](https://github.com/evav136/darilko/assets/79158550/1f468eef-9446-4ca3-afe4-28efc8532805)
+![uspešnoNarocilo](https://github.com/evav136/darilko/assets/79158550/3b764907-8a11-4c4f-b573-d0e8c2a5a157)
