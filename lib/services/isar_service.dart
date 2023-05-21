@@ -8,7 +8,6 @@ import 'package:isar/isar.dart';
 class IsarService {
   late Future<Isar> db;
   late Isar isar;
-  //late Collection gifts;
 
   IsarService() {
     db = openDB();
@@ -20,22 +19,7 @@ class IsarService {
     isar = await db;
     final gifts = getAllGifts();
   }
-  /* Future<void> cleanDb() async {
-        //throw UnimplementedError();
-
-    final isar = await db;
-    await isar.writeTxnSync(() {
-      //isar.catalogues.deleteAll();
-      isar.gifts.deleteAll();
-      //isar.orders.deleteAll();
-    }); 
-  } */
-  /* Future<void> deleteAllGifts() async {
-  final isar = await db;
-  await isar.writeTxnSync((isar) {
-    isar.gifts.deleteAll();
-  } 
-}  */
+  
 
   Future<void> saveCatalogue(Catalogue newCatalogue) async {
     final isar = await db;
@@ -89,11 +73,7 @@ class IsarService {
         allGifts.where((gift) => gift.filter == filter).toList();
 
     return filteredGifts;
-    /* final isar = await db;
-    
-    final giftQuery = isar.gifts.where();
-
-    return await giftQuery.findAll(); */
+   
   }
 
   Future<Gift?> getGiftById(int id) async {

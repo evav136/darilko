@@ -49,15 +49,22 @@ class _PaymentScreenState extends State<PaymentScreen> {
     super.dispose();
   }
 
-  void _submitPayment() {
+  void _submitPayment() async {
     if (_formKey.currentState?.validate() ?? true) {
       // Payment validation and processing logic goes here
-      // polnemo narocilo
+
       // Create an instance of IsarService
       final isarService = IsarService();
 
       // Save the updated order to the database
-       isarService.saveOrder(widget.order);
+      isarService.saveOrder(widget.order);
+      widget.order.paidFor = true;
+
+      // Decrement the stock of the gift
+      if (gift != null) {
+        gift!.stock -= 1;
+        await isarService.saveGift(gift!);
+      }
 
       _showSuccessNotification();
     }
@@ -137,7 +144,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              
               SizedBox(height: 6),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,

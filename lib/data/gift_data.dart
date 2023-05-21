@@ -87,6 +87,30 @@ class GiftData {
           stock: 10,
           filter: "ROJSTNI DAN"),
       Gift(
+          name: "Kavni objem",
+          description:
+              "Za utrujene prijatelje, ki vedno priskočijo na pomoč.",
+          price: 100.0,
+          picturePath: "assets/kava.jpg",
+          stock: 2,
+          filter: "OBLETNICA"),
+      Gift(
+          name: "Čokoladni večeri",
+          description:
+              "Da bodo večeri vaše prijateljice ob gledanju najljubše serije še slajši.",
+          price: 100.0,
+          picturePath: "assets/anime.jpg",
+          stock: 2,
+          filter: "OBLETNICA"),
+      Gift(
+          name: "Gospod Moški",
+          description:
+              "Poskrbite za popolno stilsko dovršenost pravega moškega.",
+          price: 100.0,
+          picturePath: "assets/moski.jpg",
+          stock: 2,
+          filter: "OBLETNICA"),
+      Gift(
           name: "Rožnata romantika",
           description:
               "Presenetite svojo ljubljeno osebo z romantičnim darilom za Valentinovo.",
@@ -162,7 +186,16 @@ class GiftData {
           price: 10.0,
           picturePath: "assets/boz4.jpg",
           stock: 2,
-          filter: "BOŽIČ")
+          filter: "BOŽIČ"),
+      Gift(
+          name: "Najboljše prijateljice",
+          description:
+              "Presenetite vaš kolegij z skrbno izbranimi darili.",
+          price: 100.0,
+          picturePath: "assets/ob3.jpg",
+          stock: 2,
+          filter: "OBLETNICA")
+
     ];
 
     for (var gift in preparedGifts) {

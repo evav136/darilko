@@ -108,29 +108,7 @@ class _CatalogueScreenState extends State<CatalogueScreen> {
           children: [
             Row(
               children: [
-                /*Text(
-                  '    Izberi priložnost:   ',
-                  style: TextStyle(fontSize: 20),
-                ),
-                SizedBox(width: 8),
-                 DropdownButton<String>(
-                  value: _selectedItem,
-                  dropdownColor: Color.fromARGB(255, 220, 187, 249),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedItem = newValue!;
-                      _updateFilter(newValue!);
-                    });
-                  },
-                  items: _dropdownItems.map<DropdownMenuItem<String>>(
-                    (String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    },
-                  ).toList(),
-                ), */
+               
               ],
             ),
             SizedBox(height: 16),

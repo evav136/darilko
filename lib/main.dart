@@ -3,14 +3,6 @@ import 'package:darilko/services/isar_service.dart';
 import 'package:darilko/data/gift_data.dart';
 import 'package:darilko/screens/home_screen.dart';
 
-/* void main() async {
-  runApp(const MyApp());
-  IsarService isarService = IsarService(); // Create an instance of IsarService
-  GiftData giftData = GiftData(isarService: isarService); // Create an instance of GiftData
-
-  await giftData.addPreparedGifts(); // Add pre-prepared gifts to the database
-
-} */
 
 void main() async {
   runApp(const MyApp());
@@ -22,10 +14,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-  //final IsarService isarService;
-
-  //const MyApp({Key? key, required this.isarService}) : super(key: key);
-
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

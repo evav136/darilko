@@ -131,9 +131,7 @@ class _GiftScreenState extends State<GiftScreen> {
                         _email = value;
                       });
                     },
-                    //inputFormatters: [
-                    //FilteringTextInputFormatter.deny(RegExp('')), // Allow only input with '@' symbol
-                    //],
+                    
                     decoration: InputDecoration(
                       labelText: 'E-pošta',
                       border: OutlineInputBorder(),

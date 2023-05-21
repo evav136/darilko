@@ -1,16 +1,15 @@
 import 'package:isar/isar.dart';
-import 'package:darilko/entities/gift.dart';
 
 part 'order.g.dart';
 
 @Collection()
 class Order {
   Id id = Isar.autoIncrement;
-  late String ime;
-  late String datum;
-  late double total;
-  final bool paidFor;
-  late String address;
+  late String ime = '';
+  late String datum = '';
+  late double total = 0;
+  late bool paidFor;
+  late String address = '';
   late int giftId;
 
   Order(
