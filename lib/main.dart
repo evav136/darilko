@@ -1,4 +1,3 @@
-import 'package:darilko/screens/catalogue_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:darilko/services/isar_service.dart';
 import 'package:darilko/data/gift_data.dart';
@@ -12,16 +11,7 @@ import 'package:darilko/screens/home_screen.dart';
   await giftData.addPreparedGifts(); // Add pre-prepared gifts to the database
 
 } */
-/* void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
 
-  IsarService isarService = IsarService(); // Create an instance of IsarService
-  GiftData giftData = GiftData(isarService: isarService); // Create an instance of GiftData
-
-  await giftData.addPreparedGifts(); // Add pre-prepared gifts to the database
-
-  runApp(MyApp(isarService: isarService)); // Pass the IsarService instance to MyApp
-} */
 void main() async {
   runApp(const MyApp());
   IsarService isarService = IsarService();

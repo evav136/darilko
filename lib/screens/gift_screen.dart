@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:darilko/entities/gift.dart';
 import 'package:darilko/entities/order.dart';
-import 'package:darilko/screens/order_screen.dart';
+import 'package:darilko/screens/payment_screen.dart';
 
 class GiftScreen extends StatefulWidget {
   final Gift gift;
@@ -13,28 +13,10 @@ class GiftScreen extends StatefulWidget {
 }
 
 class _GiftScreenState extends State<GiftScreen> {
-  bool _orderViewed = false;
   bool _isInStock = false;
   String _email = '';
-  Order _order = Order(); // Create an instance of the Order entity
+  Order? _order; // Change the order variable to nullable
   final TextEditingController _emailController = TextEditingController();
-
-  void _navigateToOrderScreen() async {
-    // Navigate to the order screen and wait for the result
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => OrderScreen(
-                order: _order,
-              )),
-    );
-
-    if (result != null && result == 'order_completed') {
-      setState(() {
-        _orderViewed = true;
-      });
-    }
-  }
 
   @override
   void dispose() {
@@ -100,7 +82,14 @@ class _GiftScreenState extends State<GiftScreen> {
                 alignment: Alignment.centerRight,
                 child: ElevatedButton(
                   onPressed: () {
-                    _order.addGift(widget.gift); // Add the gift to the order
+                    _order = Order(
+                      paidFor: false,
+                      datum: DateTime.now()
+                          .toString(), // Add the required properties when creating the Order
+                      total: widget.gift.price,
+                      giftId: widget.gift.id,
+                    );
+
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -110,19 +99,21 @@ class _GiftScreenState extends State<GiftScreen> {
                             TextButton(
                               onPressed: () {
                                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            OrderScreen(order: _order)));
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        PaymentScreen(order: _order!),
+                                  ),
+                                );
                               },
-                              child: Text('Preglej naročilo'),
+                              child: Text('Nadaljuj na plačilo'),
                             ),
                           ],
                         );
                       },
                     );
                   },
-                  child: Text('Dodaj k naročilu'),
+                  child: Text('Kupi darilo'),
                 ),
               )
             else

@@ -1,28 +1,26 @@
-import 'package:darilko/entities/gift.dart';
 import 'package:isar/isar.dart';
+import 'package:darilko/entities/gift.dart';
 
 part 'order.g.dart';
 
 @Collection()
 class Order {
   Id id = Isar.autoIncrement;
-  late DateTime datum;
-  late double total = 0;
-  late bool paidFor;
+  late String ime;
+  late String datum;
+  late double total;
+  final bool paidFor;
   late String address;
+  late int giftId;
 
-  final gifts = IsarLinks<Gift>();
+  Order(
+      {required this.paidFor,
+      required this.datum,
+      required this.total,
+      required this.giftId});
 
-  void addGift(Gift gift) {
-    gifts.add(gift);
-    total += gift.price;
+  @override
+  String toString() {
+    return 'Order(id: $id, ime: $ime, datum: $datum, total: $total, paidFor: $paidFor, address: $address)';
   }
-
-  void removeGift(Gift gift) {
-    gifts.remove(gift);
-    total -= gift.price;
-  }
-  // eno narocilo ima lahko vec daril (one to many relationship)
-  //@Backlink(to: 'order')
-  //final gifts = IsarLinks<Gift>();
 }

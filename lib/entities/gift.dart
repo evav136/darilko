@@ -1,5 +1,3 @@
-import 'package:darilko/entities/catalogue.dart';
-import 'package:darilko/entities/order.dart';
 import 'package:isar/isar.dart';
 
 part 'gift.g.dart';
@@ -14,25 +12,13 @@ class Gift {
   late double price;
   late String picturePath;
   late String filter;
-  //late List<String> categories;
 
-  //final catalogue = IsarLinks<Catalogue>();
-  //final order = IsarLinks<Order>();
-
-   Gift({
+  Gift({
     required this.stock,
     required this.name,
     required this.description,
     required this.price,
     required this.picturePath,
     required this.filter,
-
-   // required this.categories,
   });
-  /* static Future<void> saveGift(Gift newGift) async {
-    final isar = await Isar.getInstance();
-    await isar.writeTxn((isar) {
-      isar.gifts.put(newGift);
-    });
-  } */
 }

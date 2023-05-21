@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:darilko/screens/catalogue_screen.dart';
 import 'package:darilko/services/isar_service.dart';
 import 'package:darilko/entities/gift.dart';
+import 'package:darilko/screens/all_catalogue_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   IsarService isarService = IsarService();
@@ -76,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => CatalogueScreen(filter: "")),
+                            builder: (context) => AllCatalogueScreen()),
                       );
                     },
                     child: Text('Katalog'),

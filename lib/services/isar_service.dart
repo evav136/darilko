@@ -10,13 +10,11 @@ class IsarService {
   late Isar isar;
   //late Collection gifts;
 
-
   IsarService() {
     db = openDB();
     //cleanDb();
     //deleteAllGifts();
     initializeGifts();
-
   }
   Future<void> initializeGifts() async {
     isar = await db;
@@ -32,17 +30,24 @@ class IsarService {
       //isar.orders.deleteAll();
     }); 
   } */
-   /* Future<void> deleteAllGifts() async {
+  /* Future<void> deleteAllGifts() async {
   final isar = await db;
   await isar.writeTxnSync((isar) {
     isar.gifts.deleteAll();
   } 
 }  */
 
-
   Future<void> saveCatalogue(Catalogue newCatalogue) async {
     final isar = await db;
     isar.writeTxnSync(() => isar.catalogues.putSync(newCatalogue));
+  }
+
+  Future<Gift?> getGiftByName(String name) async {
+    isar = await db;
+    final query = isar.gifts.where().filter().nameEqualTo(name).build();
+    final result = await query.findFirst();
+
+    return result;
   }
 
   Future<void> saveGift(Gift newGift) async {
@@ -60,11 +65,11 @@ class IsarService {
   }
 
   Future<List<Gift>> getAllGifts() async {
-  final isar = await db;
-  final giftQuery = isar.gifts.where();
-  print(giftQuery);
-  return giftQuery.findAll();
-}
+    final isar = await db;
+    final giftQuery = isar.gifts.where();
+    print(giftQuery);
+    return giftQuery.findAll();
+  }
 
   Future<void> cleanDb() async {
     final isar = await db;
@@ -79,9 +84,10 @@ class IsarService {
     final isar = await db;
     final allGifts = await getAllGifts();
     print(allGifts);
-  
-    final filteredGifts = allGifts.where((gift) => gift.filter == filter).toList();
-  
+
+    final filteredGifts =
+        allGifts.where((gift) => gift.filter == filter).toList();
+
     return filteredGifts;
     /* final isar = await db;
     
@@ -100,8 +106,6 @@ class IsarService {
     return isar.orders.get(id);
   }
 
-  
-  
   Future<Isar> openDB() async {
     final directory = await getApplicationDocumentsDirectory();
     final path = '${directory.path}/isar-db';
@@ -112,7 +116,7 @@ class IsarService {
     }
 
     print(path);
-    
+
     if (Isar.instanceNames.isEmpty) {
       return await Isar.open(
         [CatalogueSchema, OrderSchema, GiftSchema],
