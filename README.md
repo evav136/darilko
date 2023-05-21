@@ -12,3 +12,5 @@ Flutter aplikacija za pomoč pri izbiranju daril. Darila lahko izbiraš glede na
 ![plačaj](https://github.com/evav136/darilko/assets/79158550/fd0a5319-1a37-4cf3-badb-16e387b0cdf1)
 ![vnesipodatke](https://github.com/evav136/darilko/assets/79158550/1f468eef-9446-4ca3-afe4-28efc8532805)
 ![uspešnoNarocilo](https://github.com/evav136/darilko/assets/79158550/3b764907-8a11-4c4f-b573-d0e8c2a5a157)
+![niNaZalogi](https://github.com/evav136/darilko/assets/79158550/1e22440c-3d70-4b6a-be1a-c1715bc6de04)
+![obvestiloZaloga](https://github.com/evav136/darilko/assets/79158550/082f8036-f453-4b8d-98f8-6094c3aee4fd)
