@@ -86,11 +86,11 @@ class _CatalogueScreenState extends State<CatalogueScreen> {
             actions: [
               Padding(
                 padding: const EdgeInsets.only(top: 22.0, right: 20.0),
-                child: ElevatedButton(
+                child: IconButton(
                   onPressed: () {
-                    Navigator.pop(context); // Go back to the previous screen
+                    Navigator.pop(context);
                   },
-                  child: const Text('Domov'),
+                  icon: Icon(Icons.shopping_cart),
                 ),
               ),
             ],
@@ -132,7 +132,10 @@ class _CatalogueScreenState extends State<CatalogueScreen> {
             ),
             SizedBox(height: 16),
             Expanded(
+                child: SingleChildScrollView(
               child: ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
                 itemCount: gifts.length,
                 itemBuilder: (context, index) {
                   final gift = gifts[index];
@@ -178,7 +181,7 @@ class _CatalogueScreenState extends State<CatalogueScreen> {
                   );
                 },
               ),
-            ),
+            )),
           ],
         ));
 

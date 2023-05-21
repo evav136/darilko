@@ -7,12 +7,17 @@ class OrderScreen extends StatelessWidget {
 
   const OrderScreen({Key? key, required this.order}) : super(key: key);
 
+  void _goBackToGiftScreen(BuildContext context) {
+    Navigator.pop(context, 'order_viewed');
+  }
+
   @override
   Widget build(BuildContext context) {
     final giftList = order.gifts.toList();
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text('Vaše naročilo'),
       ),
       body: SingleChildScrollView(

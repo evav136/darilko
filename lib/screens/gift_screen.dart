@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:darilko/entities/gift.dart';
 import 'package:darilko/entities/order.dart';
-import 'package:flutter/services.dart';
 import 'package:darilko/screens/order_screen.dart';
 
 class GiftScreen extends StatefulWidget {
@@ -14,10 +13,28 @@ class GiftScreen extends StatefulWidget {
 }
 
 class _GiftScreenState extends State<GiftScreen> {
+  bool _orderViewed = false;
   bool _isInStock = false;
   String _email = '';
   Order _order = Order(); // Create an instance of the Order entity
   final TextEditingController _emailController = TextEditingController();
+
+  void _navigateToOrderScreen() async {
+    // Navigate to the order screen and wait for the result
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => OrderScreen(
+                order: _order,
+              )),
+    );
+
+    if (result != null && result == 'order_completed') {
+      setState(() {
+        _orderViewed = true;
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -44,6 +61,7 @@ class _GiftScreenState extends State<GiftScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text('Podrobnosti'),
       ),
       body: Padding(
