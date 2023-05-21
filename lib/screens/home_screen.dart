@@ -288,15 +288,24 @@ class _HomeScreenState extends State<HomeScreen> {
               child: TextField(
                 controller: _nameController,
                 decoration: InputDecoration(
-                  labelText: 'Vnesi ime novega kataloga',
+                  labelText: 'Iščite med darili',
                   border: OutlineInputBorder(),
                 ),
               ),
             ),
-            ElevatedButton(
-              onPressed: _saveName,
-              child: Text('Shrani'),
+           ElevatedButton(
+              onPressed: () {
+                String filter = _nameController.text.trim();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CatalogueScreen(filter: filter),
+                  ),
+                );
+              },
+              child: Text('Išči'),
             ),
+
           ],
         ),
       ),

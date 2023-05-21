@@ -50,14 +50,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   void _submitPayment() {
-    if (_formKey.currentState?.validate() ?? false) {
+    if (_formKey.currentState?.validate() ?? true) {
       // Payment validation and processing logic goes here
       // polnemo narocilo
       // Create an instance of IsarService
       final isarService = IsarService();
 
       // Save the updated order to the database
-      // isarService.saveOrder(updatedOrder);
+       isarService.saveOrder(widget.order);
 
       _showSuccessNotification();
     }
@@ -133,15 +133,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(14.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Darilo:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 8),
+              
+              SizedBox(height: 6),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -152,14 +149,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         if (gift != null)
                           Image.asset(
                             gift!.picturePath,
-                            width: 100,
-                            height: 100,
+                            width: 90,
+                            height: 90,
                             fit: BoxFit.cover,
                           ),
                       ],
                     ),
                   ),
-                  SizedBox(width: 16),
+                  SizedBox(width: 14),
                   Expanded(
                     flex: 3,
                     child: Container(
@@ -188,12 +185,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 24),
+              SizedBox(height: 20),
               Text(
                 'Podatki prejemnika',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 16),
+              SizedBox(height: 14),
               TextFormField(
                 controller: _receiverNameController,
                 validator: (value) {
@@ -221,12 +218,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 24),
+              SizedBox(height: 20),
               Text(
                 'Podatki plačnika',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 16),
+              SizedBox(height: 14),
               TextFormField(
                 controller: _payerNameController,
                 validator: (value) {
@@ -325,7 +322,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 24),
+              SizedBox(height: 10),
               ElevatedButton(
                 onPressed: _submitPayment,
                 child: Text('Potrdi plačilo'),

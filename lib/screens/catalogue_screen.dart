@@ -3,6 +3,8 @@ import 'package:darilko/entities/gift.dart';
 import 'package:darilko/services/isar_service.dart';
 import 'package:darilko/screens/gift_screen.dart';
 
+import 'all_catalogue_screen.dart';
+
 class CatalogueScreen extends StatefulWidget {
   late final String filter;
   //!!!!!!!!filter mamo tuki, ne v naslednjem classu
@@ -86,26 +88,32 @@ class _CatalogueScreenState extends State<CatalogueScreen> {
             actions: [
               Padding(
                 padding: const EdgeInsets.only(top: 22.0, right: 20.0),
-                child: IconButton(
+                child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AllCatalogueScreen(),
+                      ),
+                    );
                   },
-                  icon: Icon(Icons.shopping_cart),
+                  child: Text('Vsa darila'),
                 ),
               ),
             ],
+
           ),
         ),
         body: Column(
           children: [
             Row(
               children: [
-                Text(
+                /*Text(
                   '    Izberi priložnost:   ',
                   style: TextStyle(fontSize: 20),
                 ),
                 SizedBox(width: 8),
-                DropdownButton<String>(
+                 DropdownButton<String>(
                   value: _selectedItem,
                   dropdownColor: Color.fromARGB(255, 220, 187, 249),
                   onChanged: (String? newValue) {
@@ -122,7 +130,7 @@ class _CatalogueScreenState extends State<CatalogueScreen> {
                       );
                     },
                   ).toList(),
-                ),
+                ), */
               ],
             ),
             SizedBox(height: 16),
