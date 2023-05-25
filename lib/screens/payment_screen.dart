@@ -23,6 +23,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   final TextEditingController _cvvController = TextEditingController();
 
   Gift? gift;
+  bool dataEntered = false; // Track if all data has been entered properly
 
   @override
   void initState() {
@@ -31,7 +32,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   void retrieveGift() async {
-    // final isarService = IsarService();
     final gift = await IsarService().getGiftById(widget.order.giftId);
     setState(() {
       this.gift = gift;
@@ -51,22 +51,20 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   void _submitPayment() async {
     if (_formKey.currentState?.validate() ?? true) {
-      // Payment validation and processing logic goes here
-
-      // Create an instance of IsarService
       final isarService = IsarService();
 
-      // Save the updated order to the database
-      isarService.saveOrder(widget.order);
-      widget.order.paidFor = true;
+      // Save the order and set the paidFor flag only if all data is entered properly
+      if (dataEntered) {
+        isarService.saveOrder(widget.order);
+        widget.order.paidFor = true;
 
-      // Decrement the stock of the gift
-      if (gift != null) {
-        gift!.stock -= 1;
-        await isarService.saveGift(gift!);
+        if (gift != null) {
+          gift!.stock -= 1;
+          await isarService.saveGift(gift!);
+        }
+
+        _showSuccessNotification();
       }
-
-      _showSuccessNotification();
     }
   }
 
@@ -75,8 +73,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          backgroundColor:
-              Colors.transparent, // Make the dialog background transparent
+          backgroundColor: Colors.transparent,
           content: Container(
             width: 200,
             height: 200,
@@ -87,8 +84,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Add any exciting and animated widgets you want to display
-                // For example, you can use AnimatedContainer, AnimatedBuilder, or any other custom animated widget
                 Text(
                   'Success!',
                   style: TextStyle(
@@ -141,199 +136,216 @@ class _PaymentScreenState extends State<PaymentScreen> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(14.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 6),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: Column(
-                      children: [
-                        if (gift != null)
-                          Image.asset(
-                            gift!.picturePath,
-                            width: 90,
-                            height: 90,
-                            fit: BoxFit.cover,
-                          ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(width: 14),
-                  Expanded(
-                    flex: 3,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(100, 255, 200, 246),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      padding: EdgeInsets.all(16),
+          child: Form(
+            key: _formKey,
+            onChanged: () {
+              // When any form field changes, check if all data is entered properly
+              setState(() {
+                dataEntered = _receiverNameController.text.isNotEmpty &&
+                    _addressController.text.isNotEmpty &&
+                    _payerNameController.text.isNotEmpty &&
+                    _cardNumberController.text.isNotEmpty &&
+                    _expiryDateController.text.isNotEmpty &&
+                    _cvvController.text.isNotEmpty;
+              });
+            },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 6),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 2,
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           if (gift != null)
-                            Text(
-                              gift!.name,
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          SizedBox(height: 8),
-                          if (gift != null)
-                            Text(
-                              'Cena: ${gift!.price.toStringAsFixed(2)}€',
-                              style: TextStyle(fontSize: 16),
+                            Image.asset(
+                              gift!.picturePath,
+                              width: 90,
+                              height: 90,
+                              fit: BoxFit.cover,
                             ),
                         ],
                       ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 20),
-              Text(
-                'Podatki prejemnika',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 14),
-              TextFormField(
-                controller: _receiverNameController,
-                validator: (value) {
-                  if (value?.isEmpty ?? true) {
-                    return 'Vnesite ime prejemnika';
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Ime in priimek',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 8),
-              TextFormField(
-                controller: _addressController,
-                validator: (value) {
-                  if (value?.isEmpty ?? true) {
-                    return 'Vnesite naslov prejemnika';
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Naslov',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 20),
-              Text(
-                'Podatki plačnika',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 14),
-              TextFormField(
-                controller: _payerNameController,
-                validator: (value) {
-                  if (value?.isEmpty ?? true) {
-                    return 'Vnesite ime plačnika';
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Ime in priimek',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 8),
-              TextFormField(
-                controller: _cardNumberController,
-                validator: (value) {
-                  if (value?.isEmpty ?? true) {
-                    return 'Vnesite številko kreditne kartice';
-                  }
-                  if (value?.length != 16) {
-                    return 'Številka kartice mora vsebovati 16 števk';
-                  }
-                  if (!value!.contains(RegExp(r'^[0-9]+$'))) {
-                    return 'Vnesite samo števke brez presledkov';
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  labelText: 'Štetevilka kreditne kartice',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 8),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: TextFormField(
-                      controller: _expiryDateController,
-                      validator: (value) {
-                        if (value?.isEmpty ?? true) {
-                          return 'Vnesite datum veljavnosti';
-                        }
-                        if (!RegExp(r'^\d{2}/\d{2}/\d{2}$').hasMatch(value!)) {
-                          return 'Vnesite veljaven datum (DD/MM/YY)';
-                        }
-                        final parts = value.split('/');
-                        final day = int.tryParse(parts[0]);
-                        final month = int.tryParse(parts[1]);
-                        final year = int.tryParse(parts[2]);
-                        if (day == null || month == null || year == null) {
-                          return 'Vnesite veljaven datum (DD/MM/YY)';
-                        }
-                        if (day < 1 || day > 31) {
-                          return 'Neveljaven dan';
-                        }
-                        if (month < 1 || month > 12) {
-                          return 'Neveljaven mesec';
-                        }
-                        if (year < 23 || year > 99) {
-                          return 'Neveljaven letnik';
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                        labelText: 'Datum veljavnosti (DD/MM/YY)',
-                        border: OutlineInputBorder(),
+                    SizedBox(width: 14),
+                    Expanded(
+                      flex: 3,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(100, 255, 200, 246),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        padding: EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (gift != null)
+                              Text(
+                                gift!.name,
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            SizedBox(height: 8),
+                            if (gift != null)
+                              Text(
+                                'Cena: ${gift!.price.toStringAsFixed(2)}€',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                          ],
+                        ),
                       ),
-                      keyboardType: TextInputType.number,
                     ),
+                  ],
+                ),
+                SizedBox(height: 20),
+                Text(
+                  'Podatki prejemnika',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 14),
+                TextFormField(
+                  controller: _receiverNameController,
+                  validator: (value) {
+                    if (value?.isEmpty ?? true) {
+                      return 'Vnesite ime prejemnika';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Ime in priimek',
+                    border: OutlineInputBorder(),
                   ),
-                  SizedBox(width: 16),
-                  Expanded(
-                    flex: 1,
-                    child: TextFormField(
-                      controller: _cvvController,
-                      validator: (value) {
-                        if (value?.isEmpty ?? true) {
-                          return 'Vnesite CVV kodo';
-                        }
-                        if (value!.length != 3) {
-                          return 'CVV koda mora vsebovati 3 števke';
-                        }
-                        if (!value.contains(RegExp(r'^[0-9]+$'))) {
-                          return 'Vnesite samo števke';
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                        labelText: 'CVV',
-                        border: OutlineInputBorder(),
+                ),
+                SizedBox(height: 8),
+                TextFormField(
+                  controller: _addressController,
+                  validator: (value) {
+                    if (value?.isEmpty ?? true) {
+                      return 'Vnesite naslov prejemnika';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Naslov',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  'Podatki plačnika',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 14),
+                TextFormField(
+                  controller: _payerNameController,
+                  validator: (value) {
+                    if (value?.isEmpty ?? true) {
+                      return 'Vnesite ime plačnika';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Ime in priimek',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 8),
+                TextFormField(
+                  controller: _cardNumberController,
+                  validator: (value) {
+                    if (value?.isEmpty ?? true) {
+                      return 'Vnesite številko kreditne kartice';
+                    }
+                    if (value?.length != 16) {
+                      return 'Številka kartice mora vsebovati 16 števk';
+                    }
+                    if (!value!.contains(RegExp(r'^[0-9]+$'))) {
+                      return 'Vnesite samo števke brez presledkov';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Štetevilka kreditne kartice',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(height: 8),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: TextFormField(
+                        controller: _expiryDateController,
+                        validator: (value) {
+                          if (value?.isEmpty ?? true) {
+                            return 'Vnesite datum veljavnosti';
+                          }
+                          if (!RegExp(r'^\d{2}/\d{2}/\d{2}$')
+                              .hasMatch(value!)) {
+                            return 'Vnesite veljaven datum (DD/MM/YY)';
+                          }
+                          final parts = value.split('/');
+                          final day = int.tryParse(parts[0]);
+                          final month = int.tryParse(parts[1]);
+                          final year = int.tryParse(parts[2]);
+                          if (day == null || month == null || year == null) {
+                            return 'Vnesite veljaven datum (DD/MM/YY)';
+                          }
+                          if (day < 1 || day > 31) {
+                            return 'Neveljaven dan';
+                          }
+                          if (month < 1 || month > 12) {
+                            return 'Neveljaven mesec';
+                          }
+                          if (year < 23 || year > 99) {
+                            return 'Neveljaven letnik';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'Datum veljavnosti (DD/MM/YY)',
+                          border: OutlineInputBorder(),
+                        ),
+                        keyboardType: TextInputType.number,
                       ),
-                      keyboardType: TextInputType.number,
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: _submitPayment,
-                child: Text('Potrdi plačilo'),
-              ),
-            ],
+                    SizedBox(width: 16),
+                    Expanded(
+                      flex: 1,
+                      child: TextFormField(
+                        controller: _cvvController,
+                        validator: (value) {
+                          if (value?.isEmpty ?? true) {
+                            return 'Vnesite CVV kodo';
+                          }
+                          if (value!.length != 3) {
+                            return 'CVV koda mora vsebovati 3 števke';
+                          }
+                          if (!value.contains(RegExp(r'^[0-9]+$'))) {
+                            return 'Vnesite samo števke';
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'CVV',
+                          border: OutlineInputBorder(),
+                        ),
+                        keyboardType: TextInputType.number,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: dataEntered
+                      ? _submitPayment
+                      : null, // Disable button if data is not entered properly
+                  child: Text('Potrdi plačilo'),
+                ),
+              ],
+            ),
           ),
         ),
       ),
